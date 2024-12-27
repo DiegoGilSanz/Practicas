@@ -1,6 +1,6 @@
 package gui.enumerados;
 
-public enum TipoEntrenador {
+public enum TipoLiga {
     BOXEO("BOXEO"),
     JUDO("JUDO"),
     MMA("MMA"),
@@ -8,7 +8,7 @@ public enum TipoEntrenador {
 
     private String valor;
 
-    TipoEntrenador(String valor) {
+    TipoLiga(String valor) {
         this.valor = valor;
     }
 

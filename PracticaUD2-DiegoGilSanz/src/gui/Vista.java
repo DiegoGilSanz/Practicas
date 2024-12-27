@@ -2,7 +2,7 @@ package gui;
 
 import com.github.lgooddatepicker.components.DateTimePicker;
 import gui.enumerados.EstilosPeleador;
-import gui.enumerados.TipoEntrenador;
+import gui.enumerados.TipoLiga;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -115,7 +115,7 @@ public class Vista extends JFrame {
 
     }
     private void setEnumCombo(){
-        for (TipoEntrenador tipo:TipoEntrenador.values()){
+        for (TipoLiga tipo: TipoLiga.values()){
             comboEntrenador.addItem(tipo.getValor());
         }
         comboEntrenador.setSelectedIndex(-1);
