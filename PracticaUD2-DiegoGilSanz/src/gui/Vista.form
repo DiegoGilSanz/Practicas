@@ -202,13 +202,6 @@
                 </constraints>
                 <properties/>
               </component>
-              <component id="4b2b8" class="com.github.lgooddatepicker.components.DateTimePicker" binding="nacimiento">
-                <constraints>
-                  <grid row="12" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-                  <forms/>
-                </constraints>
-                <properties/>
-              </component>
               <component id="b1398" class="javax.swing.JLabel" binding="estado">
                 <constraints>
                   <grid row="20" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
@@ -217,6 +210,13 @@
                 <properties>
                   <text value=""/>
                 </properties>
+              </component>
+              <component id="94105" class="com.github.lgooddatepicker.components.DatePicker" binding="nacimiento">
+                <constraints>
+                  <grid row="12" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                  <forms/>
+                </constraints>
+                <properties/>
               </component>
             </children>
           </grid>
@@ -466,13 +466,6 @@
                 </constraints>
                 <properties/>
               </component>
-              <component id="8896e" class="com.github.lgooddatepicker.components.DateTimePicker" binding="entrenadorFechaInicio">
-                <constraints>
-                  <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-                  <forms/>
-                </constraints>
-                <properties/>
-              </component>
               <component id="62ce0" class="javax.swing.JButton" binding="btnAñadirEntrenador">
                 <constraints>
                   <grid row="8" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
@@ -514,6 +507,13 @@
                   </component>
                 </children>
               </scrollpane>
+              <component id="c8d00" class="com.github.lgooddatepicker.components.DatePicker" binding="entrenadorFechaInicio">
+                <constraints>
+                  <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                  <forms/>
+                </constraints>
+                <properties/>
+              </component>
             </children>
           </grid>
         </children>

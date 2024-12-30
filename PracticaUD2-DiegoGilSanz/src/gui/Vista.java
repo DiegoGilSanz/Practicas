@@ -1,5 +1,6 @@
 package gui;
 
+import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DateTimePicker;
 import gui.enumerados.EstilosPeleador;
 import gui.enumerados.TipoLiga;
@@ -27,7 +28,7 @@ public class Vista extends JFrame {
      JComboBox comboEntrenador;
      JTextField txtGenero;
      JTextField txtPeso;
-     DateTimePicker nacimiento;
+     DatePicker nacimiento;
     //liga
      JTextField txtNombreLiga;
      JTextField txtDescripcionLiga;
@@ -42,7 +43,7 @@ public class Vista extends JFrame {
      JTextField txtEntrenadorNombre;
      JTextField txtEntrenadorApellidos;
      JTextField txtNacionalidad;
-     DateTimePicker entrenadorFechaInicio;
+     DatePicker entrenadorFechaInicio;
      JButton btnAñadirEntrenador;
      JButton btnModificarEntrenador;
      JButton btnEliminarEntrenador;
