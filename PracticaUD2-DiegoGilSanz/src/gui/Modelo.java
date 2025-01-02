@@ -164,7 +164,7 @@ public class Modelo {
                 }
         }
     }
-    void insertarPeleador(String nombre, String estilo, String liga, String entrenador, String genero, double peso, LocalDate nacimiento){
+    void insertarPeleador(String nombre, String estilo, String liga, String entrenador, String genero, float peso, LocalDate nacimiento){
         String consultaSql = "INSERT INTO peleador (nombre, estilo, liga, entrenador, genero, peso, nacimiento) VALUES (?,?,?,?,?,?,?)";
         PreparedStatement prepa=null;
         try {
@@ -174,7 +174,7 @@ public class Modelo {
             prepa.setString(3,liga);
             prepa.setString(4,entrenador);
             prepa.setString(5,genero);
-            prepa.setDouble(6,peso);
+            prepa.setFloat(6,peso);
             prepa.setDate(7,java.sql.Date.valueOf(nacimiento));
             prepa.executeUpdate();
 

@@ -1,7 +1,6 @@
 package gui;
 
 import com.github.lgooddatepicker.components.DatePicker;
-import com.github.lgooddatepicker.components.DateTimePicker;
 import gui.enumerados.EstilosPeleador;
 import gui.enumerados.TipoLiga;
 
@@ -21,7 +20,7 @@ public class Vista extends JFrame {
      JButton btnAñadirPeleador;
      JButton btnModificarPeleador;
      JButton btnEliminarPeleador;
-     JTable TablaPeleador;
+     JTable tablaPeleador;
      JTextField txtNombre;
      JComboBox comboEstilo;
      JComboBox comboLiga;
@@ -128,7 +127,7 @@ public class Vista extends JFrame {
     }
     private void setTableModels(){
        this.dtmPeleador=new DefaultTableModel();
-       this.TablaPeleador.setModel(dtmPeleador);
+       this.tablaPeleador.setModel(dtmPeleador);
 
          this.dtmLiga=new DefaultTableModel();
          this.tablaLiga.setModel(dtmLiga);

@@ -148,7 +148,7 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="1b18d" class="javax.swing.JTable" binding="TablaPeleador">
+                  <component id="1b18d" class="javax.swing.JTable" binding="tablaPeleador">
                     <constraints/>
                     <properties/>
                   </component>

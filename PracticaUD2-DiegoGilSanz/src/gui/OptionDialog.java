@@ -6,10 +6,10 @@ import java.awt.*;
 public class OptionDialog extends JDialog {
     private JPanel panel1;
     private JButton btnGuardarOpciones;
-    private JTextField txtIp;
-    private JTextField txtUser;
-    private JPasswordField txtPass;
-    private JPasswordField txtAdminPass;
+     JTextField txtIp;
+     JTextField txtUser;
+     JPasswordField txtPass;
+     JPasswordField txtAdminPass;
     private Frame owner;
      public OptionDialog(Frame owner) {
          super(owner,"Opciones", true);
