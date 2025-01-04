@@ -5,7 +5,7 @@ import java.awt.*;
 
 public class OptionDialog extends JDialog {
     private JPanel panel1;
-    private JButton btnGuardarOpciones;
+     JButton btnGuardarOpciones;
      JTextField txtIp;
      JTextField txtUser;
      JPasswordField txtPass;

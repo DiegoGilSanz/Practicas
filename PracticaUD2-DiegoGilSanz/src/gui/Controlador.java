@@ -60,6 +60,10 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
         vista.itemOpciones.setActionCommand("Opciones");
         vista.itemDesconectar.addActionListener(listener);
         vista.itemDesconectar.setActionCommand("Desconectar");
+        vista.btnValidate.addActionListener(listener);
+        vista.btnValidate.setActionCommand("Validar");
+        vista.optionDialog.btnGuardarOpciones.addActionListener(listener);
+        vista.optionDialog.btnGuardarOpciones.setActionCommand("guardarOpciones");
     }
     private void addWindowListener(WindowListener listener){
         vista.addWindowListener(listener);
@@ -215,6 +219,11 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
                break;
            case "Desconectar":
                 modelo.desconectar();
+                break;
+           case "Validar":
+                   vista.adminPassword.setText("");
+                   vista.adminPassworDialog.dispose();
+                   vista.optionDialog.setVisible(true);
                 break;
            case "guardarOpciones":
                if (String.valueOf(vista.adminPassword.getPassword()).equals(modelo.getAdminPassword())){

@@ -4,7 +4,6 @@ import java.io.*;
 import java.sql.*;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.Properties;
 
 public class Modelo {
@@ -13,6 +12,10 @@ public class Modelo {
     private String password;
     private String adminPassword;
     private Connection conexion;
+
+    public Modelo() {
+           getPropValues();
+    }
 
     public String getIp() {
         return ip;
@@ -54,6 +57,7 @@ public class Modelo {
         }
     }
 
+
     void setPropValues(String ip, String user, String pass, String adminPass) {
         try {
             Properties prop = new Properties();
@@ -80,8 +84,7 @@ public class Modelo {
         } catch (SQLException e) {
         e.printStackTrace();
         }   try {
-            conexion = DriverManager.getConnection(
-                    "jdbc:mysql://"+ip+":3306/",user, password);
+            conexion = DriverManager.getConnection("jdbc:mysql://"+ip+":3306/",user, password);
 
             PreparedStatement statement = null;
 
@@ -119,7 +122,7 @@ public class Modelo {
         }
     }
     void insertarEntrenador(String nombre, String apellidos, LocalDate fechaInicio, String nacionalidad){
-      String consultaSql = "INSERT INTO entrenador (nombre, apellidos, fechaInicio, nacionalidad) VALUES (?,?,?,?)";
+      String consultaSql = "INSERT INTO entrenador (nombre, apellidos, fechaInicio, pais) VALUES (?,?,?,?)";
         PreparedStatement prepa=null;
         try {
             prepa=conexion.prepareStatement(consultaSql);
@@ -142,7 +145,7 @@ public class Modelo {
     }
     void insertarLiga(String nombre, String descripcion, int participantes, String tipo, String web){
 
-        String consultaSql = "INSERT INTO liga (nombre, descripcion, participantes, tipo, web) VALUES (?,?,?,?,?)";
+        String consultaSql = "INSERT INTO liga (nombre, descripcion, participantes, tipoliga, web) VALUES (?,?,?,?,?)";
         PreparedStatement prepa=null;
         try {
             prepa=conexion.prepareStatement(consultaSql);
@@ -165,14 +168,16 @@ public class Modelo {
         }
     }
     void insertarPeleador(String nombre, String estilo, String liga, String entrenador, String genero, float peso, LocalDate nacimiento){
-        String consultaSql = "INSERT INTO peleador (nombre, estilo, liga, entrenador, genero, peso, nacimiento) VALUES (?,?,?,?,?,?,?)";
+        String consultaSql = "INSERT INTO peleador (nombre, estilo, idLiga, idEntrenador, genero, peso, fechanacimiento) VALUES (?,?,?,?,?,?,?)";
         PreparedStatement prepa=null;
+        int idLiga=Integer.valueOf(liga.split(" ")[0]);
+        int idEntrenador=Integer.valueOf(entrenador.split(" ")[0]);
         try {
             prepa=conexion.prepareStatement(consultaSql);
             prepa.setString(1,nombre);
             prepa.setString(2,estilo);
-            prepa.setString(3,liga);
-            prepa.setString(4,entrenador);
+            prepa.setInt(3,idLiga);
+            prepa.setInt(4,idEntrenador);
             prepa.setString(5,genero);
             prepa.setFloat(6,peso);
             prepa.setDate(7,java.sql.Date.valueOf(nacimiento));
@@ -190,7 +195,7 @@ public class Modelo {
         }
     }
     void modificarEntrenador(String nombre, String apellidos, LocalDate fechaInicio, String nacionalidad, int id){
-        String consultaSql = "UPDATE entrenador SET nombre=?, apellidos=?, fechaInicio=?, nacionalidad=? WHERE id=?";
+        String consultaSql = "UPDATE entrenador SET nombre=?, apellidos=?, fechaInicio=?, pais=? WHERE idEntrenador=?";
         PreparedStatement prepa=null;
         try {
             prepa=conexion.prepareStatement(consultaSql);
@@ -213,7 +218,7 @@ public class Modelo {
         }
     }
     void modificarLiga(String nombre, String descripcion, int participantes, String tipo, String web, int id){
-        String consultaSql = "UPDATE liga SET nombre=?, descripcion=?, participantes=?, tipo=?, web=? WHERE id=?";
+        String consultaSql = "UPDATE liga SET nombre=?, descripcion=?, participantes=?, tipo=?, web=? WHERE idLiga=?";
         PreparedStatement prepa=null;
         try {
             prepa=conexion.prepareStatement(consultaSql);
@@ -237,14 +242,16 @@ public class Modelo {
         }
     }
     void modificarPeleador(String nombre, String estilo, String liga, String entrenador, String genero, double peso, LocalDate nacimiento, int id){
-        String consultaSql = "UPDATE peleador SET nombre=?, estilo=?, liga=?, entrenador=?, genero=?, peso=?, nacimiento=? WHERE id=?";
+        String consultaSql = "UPDATE peleador SET nombre=?, estilo=?, idLiga=?, idEntrenador=?, genero=?, peso=?, fechanacimiento=? WHERE idPeleador=?";
         PreparedStatement prepa=null;
+        int idLiga=Integer.valueOf(liga.split(" ")[0]);
+        int idEntrenador=Integer.valueOf(entrenador.split(" ")[0]);
         try {
             prepa=conexion.prepareStatement(consultaSql);
             prepa.setString(1,nombre);
             prepa.setString(2,estilo);
-            prepa.setString(3,liga);
-            prepa.setString(4,entrenador);
+            prepa.setInt(3,idLiga);
+            prepa.setInt(4,idEntrenador);
             prepa.setString(5,genero);
             prepa.setDouble(6,peso);
             prepa.setDate(7,java.sql.Date.valueOf(nacimiento));
@@ -263,7 +270,7 @@ public class Modelo {
         }
     }
     void eliminarLiga(int id){
-        String consultaSql = "DELETE FROM liga WHERE id=?";
+        String consultaSql = "DELETE FROM liga WHERE idLiga=?";
         PreparedStatement prepa=null;
         try {
             prepa=conexion.prepareStatement(consultaSql);
@@ -286,7 +293,7 @@ public class Modelo {
 
     }
     void eliminarEntrenador(int id){
-        String consultaSql = "DELETE FROM entrenador WHERE id=?";
+        String consultaSql = "DELETE FROM entrenador WHERE idEntrenador=?";
         PreparedStatement prepa=null;
         try {
             prepa=conexion.prepareStatement(consultaSql);
@@ -306,7 +313,7 @@ public class Modelo {
         }
     }
     void eliminarPeleador(int id){
-        String consultaSql = "DELETE FROM peleador WHERE id=?";
+        String consultaSql = "DELETE FROM peleador WHERE idPeleador=?";
         PreparedStatement prepa=null;
         try {
             prepa=conexion.prepareStatement(consultaSql);
@@ -326,7 +333,7 @@ public class Modelo {
         }
     }
     ResultSet consultarLiga(){
-     String consultaSql = "SELECT id, nombre, descripcion, participantes, tipo, web FROM liga";
+     String consultaSql = "SELECT idLiga, nombre, descripcion, participantes, tipoliga, web FROM liga";
         PreparedStatement prepa=null;
         ResultSet rs=null;
         try {
@@ -339,7 +346,7 @@ public class Modelo {
 
     }
     ResultSet consultarEntrenador(){
-        String consultaSql = "SELECT id, nombre, apellidos, fechaInicio, nacionalidad FROM entrenador";
+        String consultaSql = "SELECT idEntrenador, nombre, apellidos, fechaInicio, pais FROM entrenador";
         PreparedStatement prepa=null;
         ResultSet rs=null;
         try {
@@ -352,7 +359,7 @@ public class Modelo {
 
     }
     ResultSet consultarPeleador(){
-        String consultaSql = "SELECT id, nombre, estilo, liga, entrenador, genero, peso, nacimiento FROM peleador";
+        String consultaSql = "SELECT idPeleador, nombre, estilo, idLiga, idEntrenador, genero, peso, fechanacimiento FROM peleador";
         PreparedStatement prepa=null;
         ResultSet rs=null;
         try {

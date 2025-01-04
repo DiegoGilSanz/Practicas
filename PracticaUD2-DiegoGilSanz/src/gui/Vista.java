@@ -116,9 +116,9 @@ public class Vista extends JFrame {
     }
     private void setEnumCombo(){
         for (TipoLiga tipo: TipoLiga.values()){
-            comboEntrenador.addItem(tipo.getValor());
+            comboTipoLiga.addItem(tipo.getValor());
         }
-        comboEntrenador.setSelectedIndex(-1);
+        comboTipoLiga.setSelectedIndex(-1);
         for (EstilosPeleador estilo:EstilosPeleador.values()){
             comboEstilo.addItem(estilo.getValor());
         }
