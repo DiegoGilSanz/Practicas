@@ -2,9 +2,9 @@
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="gui.Vista">
   <grid id="27dc6" binding="panel1" layout-manager="FormLayout">
     <rowspec value="center:460px:noGrow"/>
-    <colspec value="fill:550px:noGrow"/>
+    <colspec value="fill:695px:noGrow"/>
     <constraints>
-      <xy x="20" y="20" width="554" height="489"/>
+      <xy x="20" y="20" width="698" height="489"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -514,6 +514,98 @@
                 </constraints>
                 <properties/>
               </component>
+            </children>
+          </grid>
+          <grid id="7e1d0" binding="JPanelVisualizar" layout-manager="FormLayout">
+            <rowspec value="center:27px:noGrow"/>
+            <rowspec value="top:4dlu:noGrow"/>
+            <rowspec value="center:115px:noGrow"/>
+            <rowspec value="top:4dlu:noGrow"/>
+            <rowspec value="center:22px:noGrow"/>
+            <rowspec value="top:4dlu:noGrow"/>
+            <rowspec value="center:90px:noGrow"/>
+            <rowspec value="top:4dlu:noGrow"/>
+            <rowspec value="center:max(d;4px):noGrow"/>
+            <rowspec value="top:4dlu:noGrow"/>
+            <rowspec value="center:120px:noGrow"/>
+            <colspec value="fill:106px:noGrow"/>
+            <colspec value="left:4dlu:noGrow"/>
+            <colspec value="fill:d:grow"/>
+            <constraints>
+              <tabbedpane title="Visualizar"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="af63b" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <forms/>
+                </constraints>
+                <properties>
+                  <text value="Peleadores"/>
+                </properties>
+              </component>
+              <component id="5d144" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <forms/>
+                </constraints>
+                <properties>
+                  <text value="Ligas"/>
+                </properties>
+              </component>
+              <scrollpane id="b359">
+                <constraints>
+                  <grid row="2" column="0" row-span="1" col-span="3" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                  <forms defaultalign-horz="false" defaultalign-vert="false"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="19dee" class="javax.swing.JTable" binding="tablaVisualizarPeleador">
+                    <constraints/>
+                    <properties/>
+                  </component>
+                </children>
+              </scrollpane>
+              <scrollpane id="79e28">
+                <constraints>
+                  <grid row="6" column="0" row-span="1" col-span="3" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                  <forms defaultalign-horz="false" defaultalign-vert="false"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="2d0af" class="javax.swing.JTable" binding="tablaVisualizarLiga">
+                    <constraints/>
+                    <properties/>
+                  </component>
+                </children>
+              </scrollpane>
+              <component id="bfc3c" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="8" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <forms/>
+                </constraints>
+                <properties>
+                  <text value="Entrenadores"/>
+                </properties>
+              </component>
+              <scrollpane id="2b621">
+                <constraints>
+                  <grid row="10" column="0" row-span="1" col-span="3" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                  <forms defaultalign-horz="false" defaultalign-vert="false"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="40afc" class="javax.swing.JTable" binding="tablaVisualizarEntrenadores">
+                    <constraints/>
+                    <properties/>
+                  </component>
+                </children>
+              </scrollpane>
             </children>
           </grid>
         </children>

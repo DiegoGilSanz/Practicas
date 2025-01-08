@@ -33,6 +33,9 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
         refrescarEntrenador();
         refrescarLiga();
         refrescarPeleador();
+        refrescarVisualizarPeleador();
+        refrescarVisualizarLiga();
+        refrescarVisualizarEntrenador();
         refrescar = false;
     }
     private void addActionListener(ActionListener listener){
@@ -255,6 +258,7 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
                                    Float.parseFloat(vista.txtPeso.getText()),
                                    vista.nacimiento.getDate());
                                  refrescarPeleador();
+                                 refrescarVisualizarPeleador();
                      }
 
 
@@ -264,6 +268,7 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
                }
                borrarCamposPeleador();
                refrescarPeleador();
+               refrescarVisualizarPeleador();
 
            break;
            case "Modificar Peleador":
@@ -283,6 +288,7 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
                                vista.nacimiento.getDate(),
                                (Integer)vista.tablaPeleador.getValueAt(vista.tablaPeleador.getSelectedRow(),0));
                        refrescarPeleador();
+                       refrescarVisualizarPeleador();
                    }
                }catch (NumberFormatException ex){
                    Util.showErrorAlert("El peso debe ser un número");
@@ -290,10 +296,12 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
                }
                borrarCamposPeleador();
                refrescarPeleador();
+               refrescarVisualizarPeleador();
                break;
            case "Eliminar Peleador":
                 modelo.eliminarPeleador((Integer)vista.tablaPeleador.getValueAt(vista.tablaPeleador.getSelectedRow(),0));
                 refrescarPeleador();
+                refrescarVisualizarPeleador();
                 borrarCamposPeleador();
                 break;
            case "Añadir Liga":
@@ -315,6 +323,7 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
                                  String.valueOf(vista.comboTipoLiga.getSelectedItem()),
                                  vista.txtWeb.getText());
                           refrescarLiga();
+                          refrescarVisualizarLiga();
                      }
                 }catch (NumberFormatException ex){
                      Util.showErrorAlert("El número de participantes debe ser un número");
@@ -322,6 +331,7 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
                 }
                 borrarCamposLiga();
                 refrescarLiga();
+                refrescarVisualizarLiga();
                 break;
               case "Modificar Liga":
                 try {
@@ -338,6 +348,7 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
                                 vista.txtWeb.getText(),
                                 (Integer)vista.tablaLiga.getValueAt(vista.tablaLiga.getSelectedRow(),0));
                         refrescarLiga();
+                        refrescarVisualizarLiga();
                     }
                 }catch (NumberFormatException ex){
                     Util.showErrorAlert("El número de participantes debe ser un número");
@@ -345,10 +356,12 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
                 }
                 borrarCamposLiga();
                 refrescarLiga();
+                refrescarVisualizarLiga();
                 break;
               case "Eliminar Liga":
                 modelo.eliminarLiga((Integer)vista.tablaLiga.getValueAt(vista.tablaLiga.getSelectedRow(),0));
                 refrescarLiga();
+                refrescarVisualizarLiga();
                 borrarCamposLiga();
                 break;
               case "Añadir Entrenador":
@@ -370,6 +383,7 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
                                 vista.txtNacionalidad.getText()
                                );
                         refrescarEntrenador();
+                        refrescarVisualizarEntrenador();
                     }
                 }catch (NumberFormatException ex){
                     Util.showErrorAlert("El número de participantes debe ser un número");
@@ -377,6 +391,7 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
                 }
                 borrarCamposEntrenador();
                 refrescarEntrenador();
+                refrescarVisualizarEntrenador();
                 break;
               case "Modificar Entrenador":
                 try {
@@ -392,6 +407,7 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
                                 vista.txtNacionalidad.getText(),
                                 (Integer)vista.tablaEntrenador.getValueAt(vista.tablaEntrenador.getSelectedRow(),0));
                         refrescarEntrenador();
+                        refrescarVisualizarEntrenador();
                     }
                 }catch (NumberFormatException ex){
                     Util.showErrorAlert("El número de participantes debe ser un número");
@@ -399,11 +415,13 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
                 }
                 borrarCamposEntrenador();
                 refrescarEntrenador();
+                refrescarVisualizarEntrenador();
                 break;
                 case "Eliminar Entrenador":
                 modelo.eliminarEntrenador((Integer)vista.tablaEntrenador.getValueAt(vista.tablaEntrenador.getSelectedRow(),0));
                 refrescarEntrenador();
                 borrarCamposEntrenador();
+                refrescarVisualizarEntrenador();
                 break;
 
 
@@ -483,6 +501,66 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
         private void refrescarPeleador() {
             try {
              vista.tablaPeleador.setModel(tableModelPeleador(modelo.consultarPeleador()));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        private DefaultTableModel tableModelVisualizarPeleador(ResultSet rs) throws SQLException {
+            ResultSetMetaData metaData = rs.getMetaData();
+            Vector<String> columnNames = new Vector<>();
+            int columnCount = metaData.getColumnCount();
+            for (int column = 1; column <= columnCount; column++) {
+                columnNames.add(metaData.getColumnName(column));
+            }
+            Vector<Vector<Object>> data = new Vector<>();
+            setDataVector(rs, columnCount, data);
+            vista.dtmVisualizarPeleador.setDataVector(data, columnNames);
+
+            return vista.dtmVisualizarPeleador;
+        }
+        void refrescarVisualizarPeleador() {
+            try {
+                vista.tablaVisualizarPeleador.setModel(tableModelVisualizarPeleador(modelo.consultarPeleador()));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        private DefaultTableModel tableModelVisualizarLiga(ResultSet rs) throws SQLException {
+            ResultSetMetaData metaData = rs.getMetaData();
+            Vector<String> columnNames = new Vector<>();
+            int columnCount = metaData.getColumnCount();
+            for (int column = 1; column <= columnCount; column++) {
+                columnNames.add(metaData.getColumnName(column));
+            }
+            Vector<Vector<Object>> data = new Vector<>();
+            setDataVector(rs, columnCount, data);
+            vista.dtmVisualizarLiga.setDataVector(data, columnNames);
+
+            return vista.dtmVisualizarLiga;
+        }
+        void refrescarVisualizarLiga() {
+            try {
+                vista.tablaVisualizarLiga.setModel(tableModelVisualizarLiga(modelo.consultarLiga()));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        private DefaultTableModel tableModelVisualizarEntrenador(ResultSet rs) throws SQLException {
+            ResultSetMetaData metaData = rs.getMetaData();
+            Vector<String> columnNames = new Vector<>();
+            int columnCount = metaData.getColumnCount();
+            for (int column = 1; column <= columnCount; column++) {
+                columnNames.add(metaData.getColumnName(column));
+            }
+            Vector<Vector<Object>> data = new Vector<>();
+            setDataVector(rs, columnCount, data);
+            vista.dtmVisualizarEntrenador.setDataVector(data, columnNames);
+
+            return vista.dtmVisualizarEntrenador;
+        }
+        void refrescarVisualizarEntrenador() {
+            try {
+                vista.tablaVisualizarEntrenadores.setModel(tableModelVisualizarEntrenador(modelo.consultarEntrenador()));
             } catch (SQLException e) {
                 e.printStackTrace();
             }
