@@ -1,4 +1,10 @@
+/**
+ * La clase modelo se encarga de albergar el codigo mas tecnico de la aplicacion.
+ *
+ */
 package gui;
+
+import util.Util;
 
 import java.io.*;
 import java.sql.*;
@@ -12,11 +18,19 @@ public class Modelo {
     private String password;
     private String adminPassword;
     private Connection conexion;
-
+    //Constructor modelo que se encarga de oobtener los datos de conexion de la base de datos
     public Modelo() {
            getPropValues();
     }
 
+    /**
+     * Metodo que obtiene los parametros
+     * @return ip
+     * @return user
+     * @return password
+     * @return adminPassword
+     *
+     */
     public String getIp() {
         return ip;
     }
@@ -32,6 +46,7 @@ public class Modelo {
     public String getAdminPassword() {
         return adminPassword;
     }
+    //Metodo que obtiene los parametros de la base de datos
     private void getPropValues() {
         InputStream inputStream = null;
         try {
@@ -57,7 +72,7 @@ public class Modelo {
         }
     }
 
-
+    //Metodo que establece los parametros de la base de datos
     void setPropValues(String ip, String user, String pass, String adminPass) {
         try {
             Properties prop = new Properties();
@@ -76,7 +91,7 @@ public class Modelo {
         this.password = pass;
         this.adminPassword = adminPass;
     }
-
+    //Metodo que se encarga de la conexion con la base de datos
     void conectar() {
 
         try {
@@ -101,6 +116,7 @@ public class Modelo {
             e.printStackTrace();
         }
     }
+    //Metodo que se encarga de leer el fichero de configuracion
     private String leerFichero() throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader("ScriptBBDD.sql")) ;
         String linea;
@@ -112,7 +128,7 @@ public class Modelo {
 
         return stringBuilder.toString();
     }
-
+    //Metodo que se encarga de desconectar la base de datos
     void desconectar() {
         try {
             conexion.close();
@@ -121,6 +137,7 @@ public class Modelo {
             sqle.printStackTrace();
         }
     }
+    //Metodo que añade un entrenador a la base de datos
     void insertarEntrenador(String nombre, String apellidos, LocalDate fechaInicio, String nacionalidad){
       String consultaSql = "INSERT INTO entrenador (nombre, apellidos, fechaInicio, pais) VALUES (?,?,?,?)";
         PreparedStatement prepa=null;
@@ -143,6 +160,7 @@ public class Modelo {
                 }
         }
     }
+    //Metodo que añade una liga a la base de datos
     void insertarLiga(String nombre, String descripcion, int participantes, String tipo, String web){
 
         String consultaSql = "INSERT INTO liga (nombre, descripcion, participantes, tipoliga, web) VALUES (?,?,?,?,?)";
@@ -167,6 +185,7 @@ public class Modelo {
                 }
         }
     }
+    //Metodo que añade un peleador a la base de datos
     void insertarPeleador(String nombre, String estilo, String liga, String entrenador, String genero, float peso, LocalDate nacimiento){
         String consultaSql = "INSERT INTO peleador (nombre, estilo, idLiga, idEntrenador, genero, peso, fechanacimiento) VALUES (?,?,?,?,?,?,?)";
         PreparedStatement prepa=null;
@@ -194,6 +213,7 @@ public class Modelo {
                 }
         }
     }
+    //Metodo que modifica un entrenador en la base de datos
     void modificarEntrenador(String nombre, String apellidos, LocalDate fechaInicio, String nacionalidad, int id){
         String consultaSql = "UPDATE entrenador SET nombre=?, apellidos=?, fechaInicio=?, pais=? WHERE idEntrenador=?";
         PreparedStatement prepa=null;
@@ -207,7 +227,7 @@ public class Modelo {
             prepa.executeUpdate();
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            Util.showErrorAlert("Error al modificar Entrenador, posiblemente no exista");
         }finally {
             if (prepa != null)
                 try {
@@ -217,6 +237,7 @@ public class Modelo {
                 }
         }
     }
+    //Metodo que modifica una liga en la base de datos
     void modificarLiga(String nombre, String descripcion, int participantes, String tipo, String web, int id){
         String consultaSql = "UPDATE liga SET nombre=?, descripcion=?, participantes=?, tipo=?, web=? WHERE idLiga=?";
         PreparedStatement prepa=null;
@@ -231,7 +252,7 @@ public class Modelo {
             prepa.executeUpdate();
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            Util.showErrorAlert("Error al modificar Liga, posiblemente no exista");
         }finally {
             if (prepa != null)
                 try {
@@ -241,6 +262,7 @@ public class Modelo {
                 }
         }
     }
+    //Metodo que modifica un peleador en la base de datos
     void modificarPeleador(String nombre, String estilo, String liga, String entrenador, String genero, double peso, LocalDate nacimiento, int id){
         String consultaSql = "UPDATE peleador SET nombre=?, estilo=?, idLiga=?, idEntrenador=?, genero=?, peso=?, fechanacimiento=? WHERE idPeleador=?";
         PreparedStatement prepa=null;
@@ -259,7 +281,7 @@ public class Modelo {
             prepa.executeUpdate();
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            Util.showErrorAlert("Error al modificar peleador, posiblemente no exista");
         }finally {
             if (prepa != null)
                 try {
@@ -269,6 +291,7 @@ public class Modelo {
                 }
         }
     }
+    //Metodo que elimina una liga de la base de datos
     void eliminarLiga(int id){
         String consultaSql = "DELETE FROM liga WHERE idLiga=?";
         PreparedStatement prepa=null;
@@ -292,6 +315,7 @@ public class Modelo {
 
 
     }
+    //Metodo que elimina un entrenador de la base de datos
     void eliminarEntrenador(int id){
         String consultaSql = "DELETE FROM entrenador WHERE idEntrenador=?";
         PreparedStatement prepa=null;
@@ -312,6 +336,7 @@ public class Modelo {
                 }
         }
     }
+    //Metodo que elimina un peleador de la base de datos
     void eliminarPeleador(int id){
         String consultaSql = "DELETE FROM peleador WHERE idPeleador=?";
         PreparedStatement prepa=null;
@@ -332,6 +357,7 @@ public class Modelo {
                 }
         }
     }
+    //Metodo que consulta las ligas de la base de datos
     ResultSet consultarLiga(){
      String consultaSql = "SELECT idLiga, nombre, descripcion, participantes, tipoliga, web FROM liga";
         PreparedStatement prepa=null;
@@ -345,6 +371,7 @@ public class Modelo {
         }
 
     }
+    //Metodo que consulta los entrenadores de la base de datos
     ResultSet consultarEntrenador(){
         String consultaSql = "SELECT idEntrenador, nombre, apellidos, fechaInicio, pais FROM entrenador";
         PreparedStatement prepa=null;
@@ -358,6 +385,7 @@ public class Modelo {
         }
 
     }
+    //Metodo que consulta los peleadores de la base de datos
     ResultSet consultarPeleador(){
         String consultaSql = "SELECT idPeleador, nombre, estilo, idLiga, idEntrenador, genero, peso, fechanacimiento FROM peleador";
         PreparedStatement prepa=null;
@@ -371,6 +399,7 @@ public class Modelo {
         }
 
     }
+    //metodo que llama a la funcion de existe nombre de entrenador
     public boolean nombreEntrenadorExiste(String nombre){
         String consulta="SELECT existeNombreEntrenador(?)";
         boolean existe=false;
@@ -388,6 +417,7 @@ public class Modelo {
 
         return existe;
     }
+    //metodo que llama a la funcion de existe nombre de liga
     public boolean nombreLigaExiste(String nombre){
         String consulta="SELECT existeNombreLiga(?)";
         boolean existe=false;
@@ -405,6 +435,7 @@ public class Modelo {
 
         return existe;
     }
+    //metodo que llama a la funcion de existe nombre de peleador
     public boolean nombrePeleadorExiste(String nombre){
         String consulta="SELECT existeNombrePeleador(?)";
         boolean existe=false;

@@ -20,7 +20,7 @@ web varchar(500));
 CREATE TABLE IF NOT EXISTS peleador (
 idPeleador int auto_increment primary key,
 nombre varchar(50) not null,
-estilo varchar(40) not null UNIQUE,
+estilo varchar(40) not null ,
 idLiga int not null,
 idEntrenador int not null,
 genero varchar(30),
@@ -31,7 +31,7 @@ alter table peleador
 add foreign key (idLiga) references liga(idLiga),
 add foreign key (idEntrenador) references entrenador(idEntrenador);
 --
-CREATE FUNCTION existeNombreEntrenador(f_name VARCHAR(50))
+CREATE FUNCTION IF NOT EXISTS existeNombreEntrenador(f_name VARCHAR(50))
 RETURNS BIT
 BEGIN
     RETURN EXISTS (
@@ -42,7 +42,7 @@ BEGIN
 END;
 
 -- 
-CREATE FUNCTION existeNombreLiga(f_name VARCHAR(50))
+CREATE FUNCTION IF NOT EXISTS existeNombreLiga(f_name VARCHAR(50))
 RETURNS BIT
 BEGIN
     RETURN EXISTS (
@@ -53,7 +53,7 @@ BEGIN
 END;
 
 -- 
-CREATE FUNCTION existeNombrePeleador(f_name VARCHAR(50))
+CREATE FUNCTION IF NOT EXISTS existeNombrePeleador(f_name VARCHAR(50))
 RETURNS BIT
 BEGIN
     RETURN EXISTS (

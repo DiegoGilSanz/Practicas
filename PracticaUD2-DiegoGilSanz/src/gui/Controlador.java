@@ -293,6 +293,8 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
                }catch (NumberFormatException ex){
                    Util.showErrorAlert("El peso debe ser un número");
                    vista.tablaPeleador.clearSelection();
+               }catch (ArrayIndexOutOfBoundsException ex){
+                   Util.showErrorAlert("Seleccione un peleador");
                }
                borrarCamposPeleador();
                refrescarPeleador();
@@ -353,6 +355,8 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
                 }catch (NumberFormatException ex){
                     Util.showErrorAlert("El número de participantes debe ser un número");
                     vista.tablaLiga.clearSelection();
+                }catch (ArrayIndexOutOfBoundsException ex){
+                    Util.showErrorAlert("Seleccione una liga");
                 }
                 borrarCamposLiga();
                 refrescarLiga();
@@ -412,6 +416,8 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
                 }catch (NumberFormatException ex){
                     Util.showErrorAlert("El número de participantes debe ser un número");
                     vista.tablaEntrenador.clearSelection();
+                }catch (ArrayIndexOutOfBoundsException ex){
+                    Util.showErrorAlert("Seleccione un entrenador");
                 }
                 borrarCamposEntrenador();
                 refrescarEntrenador();

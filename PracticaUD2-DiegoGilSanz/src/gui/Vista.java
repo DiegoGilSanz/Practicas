@@ -12,8 +12,7 @@ import java.awt.*;
  * Esta clase utiliza Swing para construir la interfaz con varias pestañas,
  * tablas, botones, campos de texto y otros componentes necesarios para gestionar
  * peleadores, ligas y entrenadores.
- *
- * Extiende de JFrame y organiza los elementos en pestañas utilizando un JTabbedPane.
+ * Extiende de JFrame y organiza los elementos en pestañas usando un JTabbedPane.
  */
 public class Vista extends JFrame {
 
