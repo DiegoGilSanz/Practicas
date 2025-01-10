@@ -252,6 +252,7 @@ public class Modelo {
             prepa.executeUpdate();
 
         } catch (SQLException e) {
+            e.printStackTrace();
             Util.showErrorAlert("Error al modificar Liga, posiblemente no exista");
         }finally {
             if (prepa != null)

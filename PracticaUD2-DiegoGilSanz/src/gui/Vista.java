@@ -178,6 +178,7 @@ public class Vista extends JFrame {
         this.pack();
         this.setSize(new Dimension(this.getWidth() + 100, this.getHeight() + 100));
         this.setVisible(true);
+        this.setResizable(false);
         this.setLocationRelativeTo(null);
         optionDialog = new OptionDialog(this);
         setMenu();

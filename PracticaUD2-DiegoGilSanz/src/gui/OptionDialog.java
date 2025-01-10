@@ -16,6 +16,7 @@ public class OptionDialog extends JDialog {
             this.owner=owner;
          initDialog();
 
+
      }
 
      private void initDialog(){
@@ -23,6 +24,7 @@ public class OptionDialog extends JDialog {
          this.panel1.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
          this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
          this.pack();
+         this.setResizable(false);
          //doy dimension
          this.setSize(new Dimension(this.getWidth()+200,this.getHeight()));
          //lo colocamos en owner

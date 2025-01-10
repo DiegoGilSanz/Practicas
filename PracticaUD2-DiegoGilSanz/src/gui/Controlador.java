@@ -196,9 +196,10 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
 
                    vista.adminPassword.setText("");
                    vista.adminPassworDialog.dispose();
-                   vista.optionDialog.setVisible(true);
+                   vista.optionDialog.dispose();
 
-                   Util.showErrorAlert("Contraseña incorrecta");
+
+
 
                break;
            case "Añadir Peleador":
