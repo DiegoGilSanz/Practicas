@@ -259,5 +259,6 @@ public class Vista extends JFrame {
 
         this.dtmVisualizarEntrenador = new DefaultTableModel();
         this.tablaVisualizarEntrenadores.setModel(dtmVisualizarEntrenador);
+
     }
 }

@@ -12,11 +12,34 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.Vector;
-
+/**
+ * Esta clase actúa como controlador, conectando la lógica del modelo y la interfaz gráfica de usuario (vista).
+ * Se encarga de manejar eventos, actualizar la vista y comunicarse con el modelo para realizar operaciones.
+ */
 public class Controlador implements ActionListener, ItemListener, ListSelectionListener, WindowListener {
+
+    /**
+     * Instancia del modelo que gestiona los datos y la lógica de la aplicación.
+     */
     private Modelo modelo;
+
+    /**
+     * Instancia de la vista que muestra la interfaz gráfica de usuario.
+     */
     private Vista vista;
+
+    /**
+     * Indicador para evitar actualizaciones innecesarias durante ciertas operaciones.
+     */
     private boolean refrescar;
+
+    /**
+     * Constructor que inicializa el controlador con el modelo y la vista.
+     * También configura los listeners y prepara la interfaz.
+     *
+     * @param modelo Objeto del modelo.
+     * @param vista Objeto de la vista.
+     */
     public Controlador(Modelo modelo, Vista vista) {
         this.modelo = modelo;
         this.vista = vista;
@@ -27,9 +50,12 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
         modelo.conectar();
         refrescar();
         setOptions();
-
     }
-    private void refrescar(){
+
+    /**
+     * Actualiza las tablas y elementos de la interfaz gráfica.
+     */
+    private void refrescar() {
         refrescarEntrenador();
         refrescarLiga();
         refrescarPeleador();
@@ -38,7 +64,13 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
         refrescarVisualizarEntrenador();
         refrescar = false;
     }
-    private void addActionListener(ActionListener listener){
+
+    /**
+     * Configura los listeners para todos los botones y elementos interactivos de la vista.
+     *
+     * @param listener El listener que manejará los eventos.
+     */
+    private void addActionListener(ActionListener listener) {
         vista.btnAñadirPeleador.addActionListener(listener);
         vista.btnAñadirPeleador.setActionCommand("Añadir Peleador");
         vista.btnModificarPeleador.addActionListener(listener);
@@ -68,106 +100,45 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
         vista.optionDialog.btnGuardarOpciones.addActionListener(listener);
         vista.optionDialog.btnGuardarOpciones.setActionCommand("guardarOpciones");
     }
-    private void addWindowListener(WindowListener listener){
+
+    /**
+     * Configura el listener para eventos de la ventana.
+     *
+     * @param listener El listener que manejará los eventos de la ventana.
+     */
+    private void addWindowListener(WindowListener listener) {
         vista.addWindowListener(listener);
     }
-    void iniciar(){
+
+    /**
+     * Inicializa los elementos interactivos de la vista y sus respectivos listeners para selección de celdas.
+     */
+    void iniciar() {
+        // Configuración de la tabla de ligas
         vista.tablaLiga.setCellSelectionEnabled(true);
         ListSelectionModel cellSelectionModel = vista.tablaLiga.getSelectionModel();
         cellSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        cellSelectionModel.addListSelectionListener(this);
 
-        cellSelectionModel.addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                if (!e.getValueIsAdjusting() &&  !((ListSelectionModel) e.getSource()).isSelectionEmpty()){
-                    if (e.getSource().equals(vista.tablaLiga.getSelectionModel())){
-                        int row= vista.tablaLiga.getSelectedRow();
-                        vista.txtNombreLiga.setText(String.valueOf(vista.tablaLiga.getValueAt(row,1)));
-                        vista.txtDescripcionLiga.setText(String.valueOf(vista.tablaLiga.getValueAt(row,2)));
-                        vista.txtParticipantes.setText(String.valueOf(vista.tablaLiga.getValueAt(row,3)));
-                        vista.comboTipoLiga.setSelectedItem(String.valueOf(vista.tablaLiga.getValueAt(row,4)));
-                        vista.txtWeb.setText(String.valueOf(vista.tablaLiga.getValueAt(row,5)));
-
-
-                    }else if(e.getValueIsAdjusting() && ((ListSelectionModel) e.getSource()).isSelectionEmpty() && !refrescar){
-                        if (e.getSource().equals(vista.tablaLiga.getSelectionModel())){
-                           borrarCamposLiga();
-                        }
-                        if (e.getSource().equals(vista.tablaEntrenador.getSelectionModel())){
-                            borrarCamposEntrenador();
-                        }
-                        if (e.getSource().equals(vista.tablaPeleador.getSelectionModel())){
-                            borrarCamposPeleador();
-                        }
-
-                    }
-
-                }
-            }
-        });
+        // Configuración de la tabla de entrenadores
         vista.tablaEntrenador.setCellSelectionEnabled(true);
         ListSelectionModel cellSelectionModel2 = vista.tablaEntrenador.getSelectionModel();
         cellSelectionModel2.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        cellSelectionModel2.addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                if (!e.getValueIsAdjusting() &&  !((ListSelectionModel) e.getSource()).isSelectionEmpty()){
-                    if (e.getSource().equals(vista.tablaEntrenador.getSelectionModel())){
-                        int row= vista.tablaEntrenador.getSelectedRow();
-                        vista.txtEntrenadorNombre.setText(String.valueOf(vista.tablaEntrenador.getValueAt(row,1)));
-                        vista.txtEntrenadorApellidos.setText(String.valueOf(vista.tablaEntrenador.getValueAt(row,2)));
-                        vista.txtNacionalidad.setText(String.valueOf(vista.tablaEntrenador.getValueAt(row,3)));
-                        vista.entrenadorFechaInicio.setDate((Date.valueOf(String.valueOf(vista.tablaEntrenador.getValueAt(row, 3)))).toLocalDate());
+        cellSelectionModel2.addListSelectionListener(this);
 
-                    }else if(e.getValueIsAdjusting() && ((ListSelectionModel) e.getSource()).isSelectionEmpty() && !refrescar){
-                        if (e.getSource().equals(vista.tablaLiga.getSelectionModel())){
-                            borrarCamposLiga();
-                        }
-                        if (e.getSource().equals(vista.tablaEntrenador.getSelectionModel())){
-                            borrarCamposEntrenador();
-                        }
-                        if (e.getSource().equals(vista.tablaPeleador.getSelectionModel())){
-                            borrarCamposPeleador();
-                        }
-
-                    }
-                }
-            }
-        });
+        // Configuración de la tabla de peleadores
         vista.tablaPeleador.setCellSelectionEnabled(true);
         ListSelectionModel cellSelectionModel3 = vista.tablaPeleador.getSelectionModel();
         cellSelectionModel3.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        cellSelectionModel3.addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                if (!e.getValueIsAdjusting() &&  !((ListSelectionModel) e.getSource()).isSelectionEmpty()){
-                    if (e.getSource().equals(vista.tablaPeleador.getSelectionModel())){
-                        int row= vista.tablaPeleador.getSelectedRow();
-                        vista.txtNombre.setText(String.valueOf(vista.tablaPeleador.getValueAt(row,1)));
-                        vista.comboEstilo.setSelectedItem(String.valueOf(vista.tablaPeleador.getValueAt(row,2)));
-                        vista.comboLiga.setSelectedItem(String.valueOf(vista.tablaPeleador.getValueAt(row,3)));
-                        vista.comboEntrenador.setSelectedItem(String.valueOf(vista.tablaPeleador.getValueAt(row,4)));
-                        vista.txtGenero.setText(String.valueOf(vista.tablaPeleador.getValueAt(row,5)));
-                        vista.txtPeso.setText(String.valueOf(vista.tablaPeleador.getValueAt(row,6)));
-                        vista.nacimiento.setDate((Date.valueOf(String.valueOf(vista.tablaPeleador.getValueAt(row, 7))).toLocalDate()));
-
-                    }else if(e.getValueIsAdjusting() && ((ListSelectionModel) e.getSource()).isSelectionEmpty() && !refrescar){
-                        if (e.getSource().equals(vista.tablaLiga.getSelectionModel())){
-                            borrarCamposLiga();
-                        }
-                        if (e.getSource().equals(vista.tablaEntrenador.getSelectionModel())){
-                            borrarCamposEntrenador();
-                        }
-                        if (e.getSource().equals(vista.tablaPeleador.getSelectionModel())){
-                            borrarCamposPeleador();
-                        }
-
-                    }
-                }
-            }
-        });
+        cellSelectionModel3.addListSelectionListener(this);
     }
 
+    /**
+     * Maneja los eventos de selección en las tablas de la vista.
+     * Llena los campos correspondientes al seleccionar un registro.
+     *
+     * @param e El evento de selección.
+     */
     @Override
     public void valueChanged(ListSelectionEvent e) {
         if (!e.getValueIsAdjusting() && !((ListSelectionModel) e.getSource()).isSelectionEmpty()) {
@@ -178,14 +149,13 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
                 vista.txtParticipantes.setText(String.valueOf(vista.tablaLiga.getValueAt(row, 3)));
                 vista.comboTipoLiga.setSelectedItem(String.valueOf(vista.tablaLiga.getValueAt(row, 4)));
                 vista.txtWeb.setText(String.valueOf(vista.tablaLiga.getValueAt(row, 5)));
-            }else if (e.getSource().equals(vista.tablaEntrenador.getSelectionModel())) {
+            } else if (e.getSource().equals(vista.tablaEntrenador.getSelectionModel())) {
                 int row = vista.tablaEntrenador.getSelectedRow();
                 vista.txtEntrenadorNombre.setText(String.valueOf(vista.tablaEntrenador.getValueAt(row, 1)));
                 vista.txtEntrenadorApellidos.setText(String.valueOf(vista.tablaEntrenador.getValueAt(row, 2)));
                 vista.txtNacionalidad.setText(String.valueOf(vista.tablaEntrenador.getValueAt(row, 3)));
                 vista.entrenadorFechaInicio.setDate(Date.valueOf(String.valueOf(vista.tablaEntrenador.getValueAt(row, 3))).toLocalDate());
-
-            }else if(e.getSource().equals(vista.tablaPeleador.getSelectionModel())){
+            } else if (e.getSource().equals(vista.tablaPeleador.getSelectionModel())) {
                 int row = vista.tablaPeleador.getSelectedRow();
                 vista.txtNombre.setText(String.valueOf(vista.tablaPeleador.getValueAt(row, 1)));
                 vista.comboEstilo.setSelectedItem(String.valueOf(vista.tablaPeleador.getValueAt(row, 2)));
@@ -193,23 +163,16 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
                 vista.comboEntrenador.setSelectedItem(String.valueOf(vista.tablaPeleador.getValueAt(row, 4)));
                 vista.txtGenero.setText(String.valueOf(vista.tablaPeleador.getValueAt(row, 5)));
                 vista.txtPeso.setText(String.valueOf(vista.tablaPeleador.getValueAt(row, 6)));
-                vista.nacimiento.setDate(Date.valueOf(String.valueOf(vista.tablaPeleador.getValueAt(row, 7))).toLocalDate());            }else if(e.getValueIsAdjusting() && ((ListSelectionModel) e.getSource()).isSelectionEmpty() && !refrescar){
-                if (e.getSource().equals(vista.tablaLiga.getSelectionModel())){
-                    borrarCamposLiga();
-                }
-                if (e.getSource().equals(vista.tablaEntrenador.getSelectionModel())){
-                    borrarCamposEntrenador();
-                }
-                if (e.getSource().equals(vista.tablaPeleador.getSelectionModel())){
-                    borrarCamposPeleador();
-                }
-
+                vista.nacimiento.setDate(Date.valueOf(String.valueOf(vista.tablaPeleador.getValueAt(row, 7))).toLocalDate());
             }
         }
     }
 
-
-
+    /**
+     * Maneja los eventos de acción, como clics en botones o selección de elementos de menú.
+     *
+     * @param e accion que se ha realizado
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
     String comando=e.getActionCommand();
@@ -229,13 +192,13 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
                    vista.optionDialog.setVisible(true);
                 break;
            case "guardarOpciones":
-               if (String.valueOf(vista.adminPassword.getPassword()).equals(modelo.getAdminPassword())){
+
                    vista.adminPassword.setText("");
                    vista.adminPassworDialog.dispose();
                    vista.optionDialog.setVisible(true);
-               }else{
+
                    Util.showErrorAlert("Contraseña incorrecta");
-               }
+
                break;
            case "Añadir Peleador":
                try {
@@ -438,6 +401,10 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
 
        }
     }
+    /*
+    * Método que devuelve un DefaultTableModel con los datos de la tabla de ligas.
+    * @param rs ResultSet con los datos de la tabla de ligas.
+     */
     private DefaultTableModel tableModelLiga(ResultSet rs) throws SQLException {
         ResultSetMetaData metaData=rs.getMetaData();
         Vector<String> columnNames=new Vector<>();
@@ -451,6 +418,9 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
 
         return vista.dtmLiga;
     }
+    /*
+    * Método que refresca la tabla de ligas.
+     */
     private void refrescarLiga() {
             try{
                 vista.tablaLiga.setModel(tableModelLiga(modelo.consultarLiga()));
@@ -463,6 +433,10 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
             e.printStackTrace();
             }
         }
+        /*
+        * Método que devuelve un DefaultTableModel con los datos de la tabla de entrenadores.
+        * @param rs ResultSet con los datos de la tabla de entrenadores.
+         */
 
         private DefaultTableModel tableModelEntrenador(ResultSet rs) throws SQLException {
             ResultSetMetaData metaData = rs.getMetaData();
@@ -477,6 +451,10 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
 
             return vista.dtmEntrenador;
         }
+        /*
+        * Método que refresca la tabla de entrenadores.
+        * @param rs ResultSet con los datos de la tabla de entrenadores.
+         */
 
         private void refrescarEntrenador() {
             try {
@@ -489,6 +467,10 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
                 e.printStackTrace();
             }
         }
+        /*
+        * Método que devuelve un DefaultTableModel con los datos de la tabla de peleadores.
+        * @param rs ResultSet con los datos de la tabla de peleadores.
+         */
 
         private DefaultTableModel tableModelPeleador(ResultSet rs) throws SQLException {
             ResultSetMetaData metaData = rs.getMetaData();
@@ -503,7 +485,10 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
 
             return vista.dtmPeleador;
         }
-
+        /*
+        * Método que refresca la tabla de peleadores.
+        * @param rs ResultSet con los datos de la tabla de peleadores.
+         */
         private void refrescarPeleador() {
             try {
              vista.tablaPeleador.setModel(tableModelPeleador(modelo.consultarPeleador()));
@@ -511,6 +496,10 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
                 e.printStackTrace();
             }
         }
+        /*
+        * Método que devuelve un DefaultTableModel con los datos de la tabla de peleadores Visualizar.
+        * @param rs ResultSet con los datos de la tabla de peleadores.
+         */
         private DefaultTableModel tableModelVisualizarPeleador(ResultSet rs) throws SQLException {
             ResultSetMetaData metaData = rs.getMetaData();
             Vector<String> columnNames = new Vector<>();
@@ -524,6 +513,10 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
 
             return vista.dtmVisualizarPeleador;
         }
+        /*
+        * Método que refresca la tabla de peleadores.
+        * @param rs ResultSet con los datos de la tabla de peleadores Visualizar.
+         */
         void refrescarVisualizarPeleador() {
             try {
                 vista.tablaVisualizarPeleador.setModel(tableModelVisualizarPeleador(modelo.consultarPeleador()));
@@ -531,6 +524,10 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
                 e.printStackTrace();
             }
         }
+        /*
+        * Método que devuelve un DefaultTableModel con los datos de la tabla de ligas Visualizar.
+        * @param rs ResultSet con los datos de la tabla de ligas Visualizar.
+         */
         private DefaultTableModel tableModelVisualizarLiga(ResultSet rs) throws SQLException {
             ResultSetMetaData metaData = rs.getMetaData();
             Vector<String> columnNames = new Vector<>();
@@ -544,6 +541,10 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
 
             return vista.dtmVisualizarLiga;
         }
+        /*
+        * Método que refresca la tabla de ligas Visualizar.
+        * @param rs ResultSet con los datos de la tabla de ligas Visualizar.
+         */
         void refrescarVisualizarLiga() {
             try {
                 vista.tablaVisualizarLiga.setModel(tableModelVisualizarLiga(modelo.consultarLiga()));
@@ -551,6 +552,11 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
                 e.printStackTrace();
             }
         }
+        /*
+        * Método que devuelve un DefaultTableModel con los datos de la tabla de entrenadores Visualizar.
+        * @param rs ResultSet con los datos de la tabla de entrenadores Visualizar.
+        *
+         */
         private DefaultTableModel tableModelVisualizarEntrenador(ResultSet rs) throws SQLException {
             ResultSetMetaData metaData = rs.getMetaData();
             Vector<String> columnNames = new Vector<>();
@@ -564,6 +570,10 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
 
             return vista.dtmVisualizarEntrenador;
         }
+        /*
+        * Método que refresca la tabla de entrenadores Visualizar.
+        * @param rs ResultSet con los datos de la tabla de entrenadores Visualizar.
+         */
         void refrescarVisualizarEntrenador() {
             try {
                 vista.tablaVisualizarEntrenadores.setModel(tableModelVisualizarEntrenador(modelo.consultarEntrenador()));
@@ -571,7 +581,9 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
                 e.printStackTrace();
             }
         }
-
+        /*
+        * Método que borra los campos de la liga.
+         */
         private void borrarCamposLiga() {
             vista.txtNombreLiga.setText("");
             vista.txtDescripcionLiga.setText("");
@@ -579,6 +591,7 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
             vista.comboTipoLiga.setSelectedItem(-1);
             vista.txtWeb.setText("");
         }
+        //Método que borra los campos del entrenador.
 
         private void borrarCamposEntrenador() {
             vista.txtEntrenadorNombre.setText("");
@@ -586,7 +599,7 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
             vista.txtNacionalidad.setText("");
             vista.entrenadorFechaInicio.setText("");
         }
-
+            //Método que borra los campos del peleador.
         private void borrarCamposPeleador() {
             vista.txtNombre.setText("");
             vista.comboEstilo.setSelectedItem(-1);
@@ -596,15 +609,23 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
             vista.txtPeso.setText("");
             vista.nacimiento.setText("");
         }
+        //Método que comprueba si los campos de la liga están vacíos.
         private boolean comprobarLigaVacio(){
             return vista.txtNombreLiga.getText().isEmpty() || vista.txtDescripcionLiga.getText().isEmpty() || vista.txtParticipantes.getText().isEmpty() || vista.comboTipoLiga.getSelectedItem()==null || vista.txtWeb.getText().isEmpty();
         }
+        //Método que comprueba si los campos del entrenador están vacíos.
         private boolean comprobarEntrenadorVacio(){
             return vista.txtEntrenadorNombre.getText().isEmpty() || vista.txtEntrenadorApellidos.getText().isEmpty() || vista.txtNacionalidad.getText().isEmpty() || vista.entrenadorFechaInicio.getDate()==null;
         }
+        //Método que comprueba si los campos del peleador están vacíos.
         private boolean comprobarPeleadorVacio(){
             return vista.txtNombre.getText().isEmpty() || vista.comboEstilo.getSelectedItem()==null || vista.comboLiga.getSelectedItem()==null || vista.comboEntrenador.getSelectedItem()==null || vista.txtGenero.getText().isEmpty() || vista.txtPeso.getText().isEmpty() || vista.nacimiento.getDate()==null;
         }
+        /*
+        * Método que rellena un Vector con los datos de un ResultSet y los añade a otro Vector.
+        * @param rs ResultSet con los datos.
+        *
+         */
     private void setDataVector(ResultSet rs, int columnCount, Vector<Vector<Object>> data) throws SQLException {
         while (rs.next()) {
             Vector<Object> vector = new Vector<>();
@@ -614,6 +635,9 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
             data.add(vector);
         }
     }
+    /*
+    * Método que rellena los campos de la ventana de opciones con los datos del modelo.
+     */
     private void setOptions() {
         vista.optionDialog.txtIp.setText(modelo.getIp());
         vista.optionDialog.txtUser.setText(modelo.getUser());
