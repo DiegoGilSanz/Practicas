@@ -71,20 +71,20 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
      * @param listener El listener que manejará los eventos.
      */
     private void addActionListener(ActionListener listener) {
-        vista.btnAñadirPeleador.addActionListener(listener);
-        vista.btnAñadirPeleador.setActionCommand("Añadir Peleador");
+        vista.btnAnyadirPeleador.addActionListener(listener);
+        vista.btnAnyadirPeleador.setActionCommand("Añadir Peleador");
         vista.btnModificarPeleador.addActionListener(listener);
         vista.btnModificarPeleador.setActionCommand("Modificar Peleador");
         vista.btnEliminarPeleador.addActionListener(listener);
         vista.btnEliminarPeleador.setActionCommand("Eliminar Peleador");
-        vista.btnañadirLiga.addActionListener(listener);
-        vista.btnañadirLiga.setActionCommand("Añadir Liga");
+        vista.btnanyadirLiga.addActionListener(listener);
+        vista.btnanyadirLiga.setActionCommand("Añadir Liga");
         vista.btnModificaLiga.addActionListener(listener);
         vista.btnModificaLiga.setActionCommand("Modificar Liga");
         vista.btnEliminarLiga.addActionListener(listener);
         vista.btnEliminarLiga.setActionCommand("Eliminar Liga");
-        vista.btnAñadirEntrenador.addActionListener(listener);
-        vista.btnAñadirEntrenador.setActionCommand("Añadir Entrenador");
+        vista.btnAnyadirEntrenador.addActionListener(listener);
+        vista.btnAnyadirEntrenador.setActionCommand("Añadir Entrenador");
         vista.btnModificarEntrenador.addActionListener(listener);
         vista.btnModificarEntrenador.setActionCommand("Modificar Entrenador");
         vista.btnEliminarEntrenador.addActionListener(listener);
@@ -185,6 +185,7 @@ public class Controlador implements ActionListener, ItemListener, ListSelectionL
                break;
            case "Desconectar":
                 modelo.desconectar();
+                System.exit(0);
                 break;
            case "Validar":
                    vista.adminPassword.setText("");

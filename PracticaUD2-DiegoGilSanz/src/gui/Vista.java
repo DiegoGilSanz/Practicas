@@ -40,7 +40,7 @@ public class Vista extends JFrame {
     JLabel Estilo;
 
     /** Botón para añadir un nuevo peleador. */
-    JButton btnAñadirPeleador;
+    JButton btnAnyadirPeleador;
 
     /** Botón para modificar un peleador existente. */
     JButton btnModificarPeleador;
@@ -89,7 +89,7 @@ public class Vista extends JFrame {
     JTextField txtWeb;
 
     /** Botón para añadir una nueva liga. */
-    JButton btnañadirLiga;
+    JButton btnanyadirLiga;
 
     /** Botón para modificar una liga existente. */
     JButton btnModificaLiga;
@@ -114,7 +114,7 @@ public class Vista extends JFrame {
     DatePicker entrenadorFechaInicio;
 
     /** Botón para añadir un nuevo entrenador. */
-    JButton btnAñadirEntrenador;
+    JButton btnAnyadirEntrenador;
 
     /** Botón para modificar un entrenador existente. */
     JButton btnModificarEntrenador;
