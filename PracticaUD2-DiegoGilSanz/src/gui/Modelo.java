@@ -239,7 +239,7 @@ public class Modelo {
     }
     //Metodo que modifica una liga en la base de datos
     void modificarLiga(String nombre, String descripcion, int participantes, String tipo, String web, int id){
-        String consultaSql = "UPDATE liga SET nombre=?, descripcion=?, participantes=?, tipo=?, web=? WHERE idLiga=?";
+        String consultaSql = "UPDATE liga SET nombre=?, descripcion=?, participantes=?, tipoliga=?, web=? WHERE idLiga=?";
         PreparedStatement prepa=null;
         try {
             prepa=conexion.prepareStatement(consultaSql);
